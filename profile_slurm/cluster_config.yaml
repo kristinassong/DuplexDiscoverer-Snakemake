@@ -3,41 +3,49 @@ __default__:
   mail-user: kristina.song@usherbrooke.ca
   mail-type: FAIL
   job-name: "smk_{rule}_{wildcards}"
-  time: 180 # minutes
+  time: 60 # minutes
   nodes: 1
   ntasks: 1
-  mem: 32000M
+  mem: 16G
   cpus-per-task: 8
-  output: results/logs/slurmout/{rule}.{wildcards}.out
-  error: results/logs/slurmout/{rule}.{wildcards}.err
 
-
-trim3:
-  time: 600
-  cpus-per-task: 32
-  mem: 32G
-
-trim5:
-  time: 600
-  cpus-per-task: 32
-  mem: 32G
+fastp_KARRseq:
+  mem: 64G
+  time: 120
 
 STAR_index:
-  cpus-per-task: 32
+  cpus-per-task: 16
   mem: 128G
-  time: 600
+  time: 120
 
-STAR_align:
-  cpus-per-task: 32
-  mem: 128G
-  time: 600
+STAR_align_PARIS2_snoKARRseq_SPLASH_LIGRseq:
+  cpus-per-task: 8
+  mem: 64G
+  time: 120
 
-DuplexDiscoverer:
-  cpus-per-task: 32
-  mem: 128G
-  time: 600
+STAR_align_PARIS_KARRseq:
+  cpus-per-task: 8
+  mem: 64G
+  time: 120
 
-merge_dgs:
+STAR_align_RICseq:
+  cpus-per-task: 8
+  mem: 64G
+  time: 120
+
+filter_snoRNA_junctions:
+  mem: 64G
+  time: 720
+
+run_duplexdiscoverer:
+  mem: 250G
+  time: 1440
+
+run_duplexdiscoverer_large:
+  mem: 700G
+  time: 1440
+
+aggregate_interactions:
+  cpus-per-task: 4
+  mem: 64G
   time: 2880
-  cpus-per-task: 32
-  mem: 128G

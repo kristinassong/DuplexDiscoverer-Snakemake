@@ -1,0 +1,7 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - fastp=0.23.4
+  - libdeflate=1.18
+  - isa-l

@@ -1,9 +1,18 @@
-genome_gtf: /home/kris98/projects/def-scottmic/kris98/annotation_datasets/Homo_sapiens.GRCh38.110_snoRNAs_tRNAs_customrRNAs_pseudorRNAs.gtf
+# Genome
+genome_gtf: /home/kris98/projects/def-scottmic/kris98/annotation_datasets/Homo_sapiens.GRCh38.110_snoRNAs_tRNAs.gtf
 genome_fasta: /home/kris98/projects/def-scottmic/kris98/annotation_datasets/Homo_sapiens.GRCh38.110.dna.primary_assembly.fa
 
-PARIS: ['SRR2814761','SRR2814762','SRR2814763','SRR2814764','SRR2814765']
-PARIS2: ['SRR11624581','SRR11624582','SRR11624583','SRR11624584','SRR11624585','SRR11624586','SRR11624587','SRR11624588','SRR11624589','SRR11951629','SRR24883901','SRR24883902','SRR24883903','SRR24883904','SRR24883905','SRR24883906','SRR24883907','SRR24883908','SRR24883909']
-LIGR_seq: ['SRR3361013','SRR3361017']
-SPLASH: ['SRR3404943','SRR3404942','SRR3404941','SRR3404940','SRR3404939','SRR3404938','SRR3404937','SRR3404936','SRR3404928','SRR3404927','SRR3404926','SRR3404925','SRR3404924']
+# Samples
+sra_ids: resources/hg38_sra_ids.txt # SRA run download links from SRA explorer
+samples: resources/hg38_samples.txt # sample metadata table
 
-venv: /home/kris98/venv3.10/bin/activate
+# STAR parameters
+sjdb_overhang: 288
+snorna_bed: resources/snoFlake_sno.bed # snoRNAs to be included in the snoRNA-RNA interaction output
+
+# DuplexDiscovereR parameters
+collapse_n_inter: 5
+gap_collapse_similar: 2
+compute_p_values: false
+trim_alignments: true
+trim_length: 40

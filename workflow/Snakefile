@@ -1,33 +1,54 @@
 __author__ = "Kristina Sungeun Song"
 __email__ = "kristina.song@usherbrooke.ca"
 
+import pandas as pd
 
 ##### store paths and user-specific variables #####
 configfile: "config/config.yaml"
+samples = pd.read_csv(config["samples"], sep="\t", index_col="sample_id")
+# sample subsets by protocol/layout
+se_samples = samples[samples["layout"] == "SE"].index
+pe_samples = samples[samples["layout"] == "PE"].index
+paris_samples = samples[samples["protocol"]=="PARIS"].index
+paris2_samples = samples[samples["protocol"]=="PARIS2"].index
+karr_samples = samples[samples["protocol"]=="KARRseq"].index
+snokarr_samples = samples[samples["protocol"]=="snoKARRseq"].index
+ricseq_samples = samples[samples["protocol"]=="RICseq"].index
+splash_samples = samples[samples["protocol"]=="SPLASH"].index
+ligrseq_samples = samples[samples["protocol"]=="LIGRseq"].index
 
+REVERSE_STRANDED = set(karr_samples) | set(snokarr_samples) | set(ricseq_samples)
 
-#############################
-## Load rules
-#############################
+HIGH_MEM = {
+    "LIGRseq_hg38_SRR3361017",
+    "PARIS2_hg38_SRR11951629",
+    "snoKARRseq_hg38_SRR28378912",
+    "snoKARRseq_hg38_SRR28378913",
+    "snoKARRseq_hg38_SRR28378919",
+    "snoKARRseq_hg38_SRR28378922",
+    "snoKARRseq_hg38_SRR28378923",
+}
+NORMAL_MEM = [s for s in samples.index if s not in HIGH_MEM]
 
-include: "rules/download_wget.smk" # download FASTQ files via wget (faster but need to get url from SRA explorer)
+include: "rules/download.smk" # download FASTQ files via wget (faster but need to get url from SRA explorer)
 include: "rules/preprocessing.smk"
 include: "rules/mapping.smk"
+include: "rules/clustering.smk"
 
 
 rule all:
     input:
         ### STEP 1 ###
         # Download FASTQ files via wget -- profile_local
-        fq = "resources/fastq/download_status.txt",
-        # Git repos -- use profile_local
-        icSHAPE_git = directory('resources/icSHAPE'),
-        CoCo_git = directory('resources/CoCo'),
+        #"resources/data/download_status.txt",
         ### STEP 2 ###
-        # FastQC
-        PARIS_qc = expand("results/fastqc/{qc_type}/PARIS/{accession}_fastqc.html",accession=config['PARIS'],qc_type=['raw','preprocessed']),
-        PARIS2_qc = expand("results/fastqc/{qc_type}/PARIS2/{accession}_fastqc.html",accession=config['PARIS2'],qc_type=['raw','preprocessed']),
-        LIGR_seq_qc = expand("results/fastqc/{qc_type}/LIGR_seq/{accession}_fastqc.html",accession=config['LIGR_seq'],qc_type=['raw','preprocessed']),
-        SPLASH_qc = expand("results/fastqc/{qc_type}/SPLASH/{accession}_fastqc.html",accession=config['SPLASH'],qc_type=['raw','preprocessed']),
+        # Preprocess FASTQ files
+        # SE samples
+        #expand("results/fastp/{sample}.fastq.gz", sample=se_samples),
+        # PE samples
+        #expand("results/fastp/{sample}_merged.fastq.gz", sample=pe_samples),
+        # MultiQC
+        "results/multiqc/multiqc_report.html",
         # DuplexDiscovereR
-        dg = "results/duplexdiscoverer/all_dgs.tsv"
+        expand("results/duplexdiscoverer/{sample}/{sample}_dgs.tsv", sample=samples.index),
+        "results/duplexdiscoverer/merged/snoRNA_interactions_merged.tsv"

@@ -1,12 +1,24 @@
 channels:
-  - default
-  - bioconda
   - conda-forge
+  - bioconda
 dependencies:
-  - bioconductor-biostrings=2.74.0
-  - r-tidyverse=2.0.0
-  - r-dplyr=1.1.4
-  - r-biocmanager=1.30.25
-  - bioconductor-duplexdiscoverer=1.0.0
-  - bioconductor-rtracklayer=1.66.0
-  - bioconductor-genomicranges=1.58.0
+  - r-base>=4.5
+  - bioconductor-biostrings
+  - bioconductor-rtracklayer
+  - bioconductor-genomicranges
+  - bioconductor-genomicalignments
+  - bioconductor-genomeinfodb
+  - bioconductor-interactionset
+  - bioconductor-gviz
+  - r-igraph
+  - r-ggsci
+  - r-dplyr
+  - r-tibble
+  - r-tidyr
+  - r-purrr
+  - r-vctrs
+  - r-rlang
+  - r-scales
+  - r-stringr
+  - r-data.table
+  - viennarna
