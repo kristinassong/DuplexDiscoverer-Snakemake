@@ -1,5 +1,0 @@
-channels:
-  - conda-forge
-dependencies:
-  - git=2.43.0
-  - perl
